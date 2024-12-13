@@ -68,33 +68,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // 压缩图片函数
     async function compressImage(file) {
         try {
-            // 根据滑块值动态计算目标文件大小
+            // 首先检查 imageCompression 是否成功加载
+            if (typeof imageCompression === 'undefined') {
+                throw new Error('图片压缩库未能成功加载，请刷新页面重试');
+            }
+
+            // 检查文件类型
+            if (!file.type.startsWith('image/')) {
+                throw new Error('请上传图片文件（JPG、PNG等格式）');
+            }
+
+            // 检查文件大小
+            if (file.size > 50 * 1024 * 1024) {
+                throw new Error('文件过大，请上传小于50MB的图片');
+            }
+
             const quality = qualitySlider.value / 100;
             const targetSizeMB = quality * (file.size / (1024 * 1024));
             
             const options = {
-                // 设置目标压缩大小，根据质量滑块值计算
                 maxSizeMB: targetSizeMB,
-                // 根据质量值调整最大尺寸
                 maxWidthOrHeight: quality < 0.5 ? 1280 : 1920,
-                // 使用质量滑块的值
                 quality: quality,
-                // 启用 webworker 提升性能
                 useWebWorker: true,
-                // 保持 EXIF 数据
                 preserveExif: true,
-                // 设置初始压缩程度
                 initialQuality: quality,
+                onProgress: (progress) => {
+                    console.log('压缩进度：', progress);
+                }
             };
 
-            // 如果文件大于 5MB，增加额外压缩
             if (file.size > 5 * 1024 * 1024) {
                 options.maxSizeMB = options.maxSizeMB * 0.7;
             }
 
             const compressedFile = await imageCompression(file, options);
             
-            // 如果压缩后文件仍然很大，进行第二次压缩
             if (compressedFile.size > file.size * 0.8) {
                 options.quality = quality * 0.8;
                 options.maxWidthOrHeight = quality < 0.5 ? 1024 : 1600;
@@ -105,7 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('压缩失败:', error);
-            alert('图片压缩失败，请重试');
+            // 显示更友好的错误信息
+            alert(error.message || '图片压缩失败，请检查网络连接后重试');
+            
+            // 重置界面状态
+            previewContainer.style.display = 'none';
+            controlPanel.style.display = 'none';
         }
     }
 

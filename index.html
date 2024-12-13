@@ -66,7 +66,18 @@
             </div>
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script>
+        // 添加加载提示
+        window.addEventListener('load', function() {
+            if (typeof imageCompression === 'undefined') {
+                console.error('图片压缩库加载失败');
+                alert('页面资源加载失败，请刷新页面重试');
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js" 
+            onerror="alert('网络连接不稳定，请刷新页面重试')"
+    ></script>
     <script src="script.js"></script>
 </body>
 </html> 
