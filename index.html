@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>图片压缩工具</h1>
+            <p>支持PNG、JPG格式,快速压缩,品质保证</p>
+            <a href="https://github.com/Marshalcy/image-compressor" class="github-link" target="_blank">
+                <svg height="24" viewBox="0 0 16 16" width="24">
+                    <path fill="#1D1D1F" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+        </header>
+
+        <main>
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="fileInput" accept="image/*" hidden>
+                <div class="upload-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    <p>点击或拖拽图片到这里</p>
+                    <p class="upload-hint">支持 PNG、JPG 格式</p>
+                </div>
+            </div>
+
+            <!-- 预览区域 -->
+            <div class="preview-container" id="previewContainer" style="display: none;">
+                <div class="preview-box">
+                    <h3>原图</h3>
+                    <div class="image-container">
+                        <img id="originalImage" alt="原图预览">
+                    </div>
+                    <div class="file-info">
+                        <span>文件大小：</span>
+                        <span id="originalSize">0 KB</span>
+                    </div>
+                </div>
+
+                <div class="preview-box">
+                    <h3>压缩后</h3>
+                    <div class="image-container">
+                        <img id="compressedImage" alt="压缩后预览">
+                    </div>
+                    <div class="file-info">
+                        <span>文件大小：</span>
+                        <span id="compressedSize">0 KB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 控制面板 -->
+            <div class="control-panel" id="controlPanel" style="display: none;">
+                <div class="quality-control">
+                    <label for="qualitySlider">压缩质量：<span id="qualityValue">60%</span></label>
+                    <input type="range" id="qualitySlider" min="20" max="100" value="60">
+                </div>
+                <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
